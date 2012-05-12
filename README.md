@@ -9,12 +9,12 @@ THMouse is a third-party software that enables mouse control in Touhou danmaku g
 Compatibility
 -------------
 
-TH10.exe ~ Mountain of Faith 
-TH11.exe ~ Subterranean Animism 
-TH12.exe ~ Undefined Fantastic Object 
-TH125.exe ~ Shoot the Bullet DS
-TH128.exe ~ Fairy Wars 
-TH13.exe ~ Ten Desires (ver1.00c)
+* TH10.exe ~ Mountain of Faith 
+* TH11.exe ~ Subterranean Animism 
+* TH12.exe ~ Undefined Fantastic Object 
+* TH125.exe ~ Shoot the Bullet DS
+* TH128.exe ~ Fairy Wars 
+* TH13.exe ~ Ten Desires (ver1.00c)
 
 FAQ
 ---
@@ -22,13 +22,18 @@ FAQ
 ### How to compile?
 1. Install Windows SDK (or Vitual Studio), DirectX SDK, CMake (add cmake to PATH).
 2. Open cmd (Command Prompt), set compile environments like this: (Change path to your SDK version)
+    ```
     call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 /xp /Release
     call "C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Utilities\Bin\dx_setenv.cmd" x86
+    ```
+
 3. Go to ThMouse source folder, for example C:\ThMouse, type:
+    ```
     mkdir release
     cd release
     cmake ..
     nmake
+    ```
 4. You can get compile result at C:\ThMouse\release\bin .
 
 ### How to install?
@@ -46,7 +51,7 @@ Just put all files (cursor.png, games, ThDxHook.dll, ThMouse.exe, ThMouse.ini) i
 
 * The character will move towards where the cursor points. Please note that it will NOT move immidiately with the cursor, because ThMouse can not change moving speed.
 * You still have to use left hand to control low speed and fire buttons.
-# Left click can initiate bomb.
+* Left click can initiate bomb.
 * Right click can turn off mouse control temporally.
 
 ### How to close it?
@@ -60,6 +65,7 @@ Additional Instructions
 ### Bomb for TH11
 
 In order to bomb in TH11 (Subterranean Animism), you may need to modify ThMouse.ini:
+
 1. Run TH11.exe, go to OPTIONS, then KEY CONFIG.
 2. Find the number xx that corresponds to the button "SPECIAL".
 3. Exit the game and open up ThMouse.ini.
@@ -68,6 +74,7 @@ In order to bomb in TH11 (Subterranean Animism), you may need to modify ThMouse.
 ### Cursor sprite
 
 The crosshair/cursor sprite may be changed:
+
 1. Find your preferred crosshair in .png format and place it into the same folder as ThMouse.exe.
 2. Open up ThMouse.ini.
 3. Change the file name after "CursorTexture = " to the preferred crosshair file's name. (Don't forget the file extension name ".png".)
