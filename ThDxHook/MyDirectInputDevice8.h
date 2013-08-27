@@ -78,7 +78,9 @@ public:
 				{
 					address = *((DWORD*)address);
 					if(address == 0)
+					{
 						break;
+					}
 					address	+= g_currentGameConfig.Posistion.Chain[i];
 				}
 				if(address != 0)

@@ -38,20 +38,25 @@ typedef MMRESULT (WINAPI * joyGetPosEx_t)( __in UINT uJoyID, __out LPJOYINFOEX p
 //typedef MMRESULT (WINAPI * timeEndPeriod_t)( __in UINT uPeriod);
 //typedef DWORD (WINAPI * timeGetTime_t)(void);
 
+static int g_joy_init = -1;
+
 MMRESULT WINAPI MyJoyGetDevCapsA( __in UINT_PTR uJoyID, __out_bcount(cbjc) LPJOYCAPSA pjc, __in UINT cbjc)
 {
-	//WriteToLog( "MyMmsystem: MyJoyGetDevCapsA called." );
-	//joyGetDevCapsA_t old_func = (joyGetDevCapsA_t) WinmmHook.Functions[WinmmFN_joyGetDevCapsA].OrigFn;
-	//MMRESULT r = old_func(uJoyID, pjc, cbjc);
+#if 0
+	WriteToLog( "MyMmsystem: MyJoyGetDevCapsA called." );
+	joyGetDevCapsA_t old_func = (joyGetDevCapsA_t) WinmmHook.Functions[WinmmFN_joyGetDevCapsA].OrigFn;
+	MMRESULT r = old_func(uJoyID, pjc, cbjc);
 
-	//char dbBuff[512];
-	//sprintf_s(dbBuff, sizeof(dbBuff),
-	//"MyMmsystem: MyJoyGetDevCapsA called. uJoyID = 0x%08X, szPname = %s, wNumButtons = %u, wNumAxes = %u, wXmin = %u, wXmax = %u, wYmin = %u, wYmax = %u\n",
-	//uJoyID, pjc->szPname, pjc->wNumButtons, pjc->wNumAxes,
-	//pjc->wXmin, pjc->wXmax, pjc->wYmin, pjc->wYmax);
-	//WriteToLog( dbBuff );
-	//return r;
+	char dbBuff[512];
+	sprintf_s(dbBuff, sizeof(dbBuff),
+	"MyMmsystem: MyJoyGetDevCapsA called. uJoyID = 0x%08X, szPname = %s, wNumButtons = %u, wNumAxes = %u, wXmin = %u, wXmax = %u, wYmin = %u, wYmax = %u\n",
+	uJoyID, pjc->szPname, pjc->wNumButtons, pjc->wNumAxes,
+	pjc->wXmin, pjc->wXmax, pjc->wYmin, pjc->wYmax);
+	WriteToLog( dbBuff );
+	return r;
+#endif
 
+	g_joy_init = 1;
 	strcpy(pjc->szPname, "ThMouse");
 	pjc->wNumButtons = 32;
 	pjc->wMaxButtons = 32;
@@ -66,16 +71,30 @@ MMRESULT WINAPI MyJoyGetDevCapsA( __in UINT_PTR uJoyID, __out_bcount(cbjc) LPJOY
 
 MMRESULT WINAPI MyJoyGetPosEx( __in UINT uJoyID, __out LPJOYINFOEX pji)
 {
-	//joyGetPosEx_t old_func = (joyGetPosEx_t) WinmmHook.Functions[WinmmFN_joyGetPosEx].OrigFn;
-	//MMRESULT r = old_func(uJoyID, pji);
-	//char dbBuff[512];
-	//sprintf_s(dbBuff, sizeof(dbBuff),
-	//"MyMmsystem: MyJoyGetPosEx called. uJoyID = 0x%08X, dwFlags = 0x%08X, dwButtons = 0x%08X, dwXpos = %u, dwYpos = %u\n",
-	//uJoyID, pji->dwFlags, pji->dwButtons, pji->dwXpos, pji->dwYpos);
-	//WriteToLog( dbBuff );
-	//return r;
+#if 0
+	if(!g_joy_init)
+	{
+		joyGetPosEx_t old_func = (joyGetPosEx_t) WinmmHook.Functions[WinmmFN_joyGetPosEx].OrigFn;
+		MMRESULT r = old_func(uJoyID, pji);
+		char dbBuff[512];
+		sprintf_s(dbBuff, sizeof(dbBuff),
+		"MyMmsystem: MyJoyGetPosEx called. uJoyID = 0x%08X, dwFlags = 0x%08X, dwButtons = 0x%08X, dwXpos = %u, dwYpos = %u r = %u\n",
+		uJoyID, pji->dwFlags, pji->dwButtons, pji->dwXpos, pji->dwYpos, r);
+		WriteToLog( dbBuff );
+		return r;
+	}
+#endif
 
-	if(g_working)
+	if(g_joy_init == -1)
+	{
+		g_joy_init = 0;
+		return JOYERR_NOERROR;
+	}
+	if(g_joy_init == 0)
+	{
+		return JOYERR_PARMS;
+	}
+	else if(g_working)
 	{
 		DWORD address = g_currentGameConfig.Posistion.Chain[0];
 		for(int i=1; i<g_currentGameConfig.Posistion.Length; i++)

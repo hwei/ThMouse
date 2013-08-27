@@ -3,6 +3,8 @@
 #include "stdafx.h"
 #include "global.h"
 
+// #define DEBUG_MESSAGE
+
 #define VERTEX_COUNT 12
 #define CURSOR_SIZE1 3.5f
 #define CURSOR_SIZE2 16.5f
@@ -26,9 +28,9 @@ public:
 		if(gs_textureFilePath[0])
 			D3DXCreateTextureFromFile(device, gs_textureFilePath, &m_texture);
 
-	
-		//D3DXCreateFont( this, 16, 0, 400, 1, 0, ANSI_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH|FF_DONTCARE, "Courier New", &m_pFont );
-		
+#ifdef DEBUG_MESSAGE
+		D3DXCreateFont( this, 16, 0, 400, 1, 0, ANSI_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH|FF_DONTCARE, "Courier New", &m_pFont );
+#endif
 	}
 
 	/*** IUnknown methods ***/
@@ -47,7 +49,9 @@ public:
 		ULONG count = m_device->Release();
 		if(0 == count)
 		{
-			//m_pFont->Release();
+#ifdef DEBUG_MESSAGE
+			m_pFont->Release();
+#endif
 			m_texture->Release();
 			m_sprite->Release();
 			delete this;
@@ -260,33 +264,33 @@ public:
 
 	STDMETHOD(EndScene)(THIS)
 	{
-
-
-		//char str[64];
-		//RECT rec;
-		//DWORD address = g_currentGameConfig.Posistion.Chain[0];
-		//sprintf_s(str, sizeof(str), "0x%08X", address);
-		//rec.left = 0; rec.top = 0; rec.right = 200; rec.bottom = 16;
-		//m_pFont->DrawTextA(0, str, 10, &rec, DT_LEFT, 0xffffff00);
-		//for(int i=1; i<g_currentGameConfig.Posistion.Length; i++)
-		//{
-		//	address = *((DWORD*)address);
-		//	sprintf_s(str, sizeof(str), "0x%08X + 0x%08X", address, g_currentGameConfig.Posistion.Chain[i]);
-		//	rec.left = 0; rec.top = i*16; rec.right = 200; rec.bottom = (i+1)*16;
-		//	m_pFont->DrawTextA(0, str, 23, &rec, DT_LEFT, 0xffffff00);
-		//	if(address == 0)
-		//		break;
-		//	address	+= g_currentGameConfig.Posistion.Chain[i];
-		//}
-		//if(address != 0)
-		//{
-		//	LPPOINT position = (LPPOINT)(address);
-		//	sprintf_s(str, sizeof(str), "(%8d,%8d)", position->x, position->y);
-		//	RECT rec1 = {300,0,500,16};
-		//	
-		//	m_pFont->DrawTextA(0, str, 19, &rec1, DT_LEFT, 0xffffffff);
-		//	
-		//}
+#ifdef DEBUG_MESSAGE
+		char str[64];
+		RECT rec;
+		DWORD address = g_currentGameConfig.Posistion.Chain[0];
+		sprintf_s(str, sizeof(str), "0x%08X", address);
+		rec.left = 0; rec.top = 0; rec.right = 200; rec.bottom = 16;
+		m_pFont->DrawTextA(0, str, 10, &rec, DT_LEFT, 0xff00ff00);
+		for(int i=1; i<g_currentGameConfig.Posistion.Length; i++)
+		{
+			address = *((DWORD*)address);
+			sprintf_s(str, sizeof(str), "0x%08X + 0x%08X", address, g_currentGameConfig.Posistion.Chain[i]);
+			rec.left = 0; rec.top = i*16; rec.right = 200; rec.bottom = (i+1)*16;
+			m_pFont->DrawTextA(0, str, 23, &rec, DT_LEFT, 0xffffff00);
+			if(address == 0)
+				break;
+			address	+= g_currentGameConfig.Posistion.Chain[i];
+		}
+		if(address != 0)
+		{
+			LPPOINT position = (LPPOINT)(address);
+			sprintf_s(str, sizeof(str), "(%8d,%8d)", position->x, position->y);
+			RECT rec1 = {0,64,200,80};
+			
+			m_pFont->DrawTextA(0, str, 19, &rec1, DT_LEFT, 0xffffffff);
+			
+		}
+#endif
 
 		POINT pos = {0,0};
 		GetCursorPos(&pos);
@@ -295,6 +299,13 @@ public:
 		if(!m_texture)
 			return m_device->EndScene();
 
+#ifdef DEBUG_MESSAGE
+		{
+			sprintf_s(str, sizeof(str), "(%8d,%8d)", pos.x, pos.y);
+			RECT rec1 = {0,80,200,96};
+			m_pFont->DrawTextA(0, str, 19, &rec1, DT_LEFT, 0xffffffff);
+		}
+#endif
 
 		D3DXVECTOR3 position((float)pos.x, (float)pos.y, 0.0);
 		D3DXVECTOR3 center(64.0, 64.0, 0.0);
@@ -790,7 +801,9 @@ private:
 	IDirect3DDevice9* m_device;	
 	IDirect3D9* m_d3d;
 	HWND m_hFocusWindow;
-	//LPD3DXFONT m_pFont;
+#ifdef DEBUG_MESSAGE
+	LPD3DXFONT m_pFont;
+#endif
 	LPD3DXSPRITE m_sprite;
 	LPDIRECT3DTEXTURE9 m_texture;
 };

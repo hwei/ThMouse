@@ -15,26 +15,21 @@ Compatibility
 * TH125.exe ~ Shoot the Bullet DS
 * TH128.exe ~ Fairy Wars 
 * TH13.exe ~ Ten Desires (ver1.00c)
+* TH14.exe ~ Double Dealing Character (var1.00a 1280*960 resolution)
 
 FAQ
 ---
 
 ### How to compile?
-1. Install Windows SDK (or Vitual Studio), DirectX SDK, CMake (add cmake to PATH).
-2. Open cmd (Command Prompt), set compile environments like this: (Change path to your SDK version)
+1. Install Windows SDK (or Vitual Studio), DirectX SDK, CMake (and add cmake to PATH).
+2. Open Windows SDK shell (or cmd), and go to ThMouse source folder, for example C:\ThMouse, type:
     ```
-    call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 /xp /Release
-    call "C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Utilities\Bin\dx_setenv.cmd" x86
-    ```
-
-3. Go to ThMouse source folder, for example C:\ThMouse, type:
-    ```
-    mkdir release
-    cd release
+    mkdir build
+    cd build
     cmake ..
-    nmake
     ```
-4. You can get compile result at C:\ThMouse\release\bin .
+3. Use NMake (or Vitual Studio) to build the project ThMouse. 
+4. You can get compile result at `C:\ThMouse\build\bin` .
 
 ### How to install?
 

@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
+
+include_directories(${DirectX_INCLUDE_DIR})
+
 set(SRC_LIST
 apihijack.h                GameConfigArray.h
 global.h                   MyDirect3D9.h
@@ -13,6 +16,7 @@ MyDirectInput8Create.cpp   MyMmsystem.cpp
 MyPeekMessageA.cpp         stdafx.cpp
 ThDxHook.cpp
 )
+
 add_library(ThDxHook SHARED ${SRC_LIST})
 target_link_libraries(ThDxHook shlwapi winmm dxguid D3dx9)
 add_definitions("-DTHDXHOOK_EXPORTS")
