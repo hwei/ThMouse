@@ -15,7 +15,7 @@ Compatibility
 * TH125.exe ~ Shoot the Bullet DS
 * TH128.exe ~ Fairy Wars 
 * TH13.exe ~ Ten Desires (ver1.00c)
-* TH14.exe ~ Double Dealing Character (var1.00a 1280*960 resolution)
+* TH14.exe ~ Double Dealing Character (ver1.00b 1280*960 resolution)
 
 FAQ
 ---
